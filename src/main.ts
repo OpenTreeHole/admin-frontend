@@ -1,17 +1,21 @@
-import { createApp } from "vue";
-import { createPinia } from "pinia";
+import './assets/main.css'
+import 'animate.css/animate.min.css'
 
-import App from "./App.vue";
-import router from "./router";
-import vuetify from "./plugins/vuetify";
+import { createApp } from 'vue'
+import { createPinia } from 'pinia'
 
-import "./assets/main.css";
-import "./style.css";
+import ElementPlus from 'element-plus'
 
-const app = createApp(App);
+import App from './App.vue'
+import router from './router'
 
-app.use(createPinia());
-app.use(router);
-app.use(vuetify);
+import 'element-plus/theme-chalk/index.css'
+import 'element-plus/theme-chalk/dark/css-vars.css'
 
-app.mount("#app");
+const app = createApp(App)
+
+app.use(createPinia())
+app.use(router)
+app.use(ElementPlus)
+
+app.mount('#app')

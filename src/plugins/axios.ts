@@ -1,35 +1,33 @@
-import axios from "axios";
-import NProgress from "nprogress";
-import "nprogress/nprogress.css";
+import axios from 'axios'
+import NProgress from 'nprogress'
 
-const request = axios.create({
-  baseURL: "https://api.example.com", // edit it!
-  headers: {
-    "Content-type": "application/json",
-  },
-  timeout: 6000,
-});
+const port = import.meta.env.PROD ? 57257 + '/api/v1' : 8000
 
-request.interceptors.request.use(
+const instance = axios.create({
+  baseURL: 'http://localhost:' + port
+})
+
+instance.interceptors.request.use(
   (config) => {
-    NProgress.start();
-    return config;
+    NProgress.start()
+    const token = localStorage.getItem('token')
+    if (token) {
+      config.headers['Authorization'] = `Bearer ${token}`
+    }
+    return config
   },
-  (error) => {
-    NProgress.done();
-    return Promise.reject(error);
-  }
-);
+  (error) => Promise.reject(error)
+)
 
-request.interceptors.response.use(
+instance.interceptors.response.use(
   (response) => {
-    NProgress.done();
-    return response;
+    NProgress.done()
+    return response
   },
   (error) => {
-    NProgress.done();
-    return Promise.reject(error);
+    NProgress.done()
+    return Promise.reject(error)
   }
-);
+)
 
-export default request;
+export default instance
