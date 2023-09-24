@@ -1,10 +1,11 @@
 import axios from 'axios'
 import NProgress from 'nprogress'
 
-const port = import.meta.env.PROD ? 57257 + '/api/v1' : 11451
+// const port = import.meta.env.PROD ? 57257 + '/api/v1' : 11451
 
 const instance = axios.create({
-  baseURL: 'http://localhost:' + port
+  // baseURL: 'http://localhost:' + port
+  baseURL: 'http://localhost:11451'
 })
 
 instance.interceptors.request.use(

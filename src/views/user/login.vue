@@ -14,7 +14,8 @@
 
 <script setup lang="ts">
 import { reactive } from 'vue'
-import axios from '@/plugins/axios'
+import { login } from '@/api/user/login'
+import { UserStore } from '@/stores/user'
 
 const form = reactive({
   email: '',
@@ -22,6 +23,13 @@ const form = reactive({
 })
 
 function submit() {
-  axios.post('/login', form)
+  login({
+    email: form.email,
+    password: form.password
+  })
+    .then((res) => {
+      console.log(res)
+    })
+    .catch((err) => {})
 }
 </script>
