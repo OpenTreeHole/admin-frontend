@@ -10,7 +10,6 @@ CORS(app, resources='*', origins='*')
 
 app.register_blueprint(user)
 
-
 @app.route('/')
 def main():
     return 'Hello, World!'
