@@ -16,6 +16,7 @@
 import { reactive } from 'vue'
 import { login } from '@/api/user/login'
 import { useUserStore } from '@/stores/user'
+import { toasts } from '@/util/dialog'
 
 const form = reactive({
   email: '',
@@ -28,8 +29,10 @@ function submit() {
     password: form.password
   })
     .then((res) => {
-      console.log(res)
+      toasts.success('登录成功！')
     })
-    .catch((err) => {})
+    .catch((err) => {
+      console.error(err)
+    })
 }
 </script>
