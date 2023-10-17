@@ -1,20 +1,11 @@
-import { fileURLToPath, URL } from 'node:url'
+import { defineConfig } from "vite";
+import Refina from "vite-plugin-refina";
 
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
-import vueJsx from '@vitejs/plugin-vue-jsx'
-
-// https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [vue(), vueJsx()],
-  resolve: {
-    alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
+  server: {
+    fs: {
+      allow: [".."],
     }
   },
-  css: {
-    postcss: {
-      plugins: [require('tailwindcss'), require('autoprefixer')]
-    }
-  }
-})
+  plugins: [Refina()],
+});

@@ -1,24 +1,19 @@
-import axios from '../../plugins/axios'
-import { wrap } from '../wrap'
+import { unwrap } from "../unwrap"
+import axios from "../../util/axios"
+import { AUTH } from "../../util/server"
 
-type UserLoginApiRequest = {
-  email: string
-  password: string
+export type LoginRequest = {
+    email: string,
+    password: string
 }
 
-type UserLoginApiResponse =
-  | {
-      access: string
-      refresh: string
-      message: string
-    }
-  | {
-      data: {}
-      message: string
-    }
-
-function login(req: UserLoginApiRequest): Promise<UserLoginApiResponse> {
-  return wrap(axios.post('/login', req))
+export type LoginResponse = {
+    access: string,
+    refresh: string,
+    message: string
 }
 
-export { login }
+export function login(req: LoginRequest): LoginResponse {
+    console.log(req)
+    return unwrap(axios.post(AUTH + "/login", req)) as LoginResponse
+}
