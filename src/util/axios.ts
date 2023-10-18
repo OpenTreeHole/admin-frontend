@@ -1,16 +1,11 @@
 import axios from 'axios'
 
-const instance = axios.create({
-    proxy: {
-        protocol: 'https',
-        host: 'auth.jingyijun.xyz',
-        port: 9443
-    },
+const axios_auth = axios.create({
     baseURL: "https://auth.jingyijun.xyz:9443/api",
-    headers: {
-        "Content-Type": "application/json",
-        // "Host": "auth.jingyijun.xyz:9443"
-    }
+})
+
+const axios_treehole = axios.create({
+    
 })
 
 // instance.interceptors.request.use(
@@ -24,4 +19,6 @@ const instance = axios.create({
 //   (error) => Promise.reject(error)
 // )
 
-export default instance
+export {
+    axios_auth
+}

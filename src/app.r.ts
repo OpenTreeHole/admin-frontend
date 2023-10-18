@@ -3,8 +3,9 @@ import { app as refina_app } from "refina"
 import "@refina/mdui"
 import "@refina/mdui/styles.css"
 import Router from "@refina/router";
+// import router from "./router.r";
 import router, { beforeRoute } from "./router.r";
-import './util/store'
+import './store'
 
 let app = refina_app
   .use(MdUI)

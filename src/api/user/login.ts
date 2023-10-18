@@ -1,6 +1,8 @@
 import { unwrap } from "../unwrap"
-import axios from "../../util/axios"
+import { axios_auth as axios } from "../../util/axios"
 import { AUTH } from "../../util/server"
+
+const path = AUTH + "/login"
 
 export type LoginRequest = {
     email: string,
@@ -13,7 +15,6 @@ export type LoginResponse = {
     message: string
 }
 
-export function login(req: LoginRequest): LoginResponse {
-    console.log(req)
-    return unwrap(axios.post(AUTH + "/login", req)) as LoginResponse
+export async function login(req: LoginRequest): Promise<LoginResponse> {
+    return await unwrap(axios.post(path, req)) as LoginResponse
 }
