@@ -14,7 +14,9 @@ let app = refina_app
 app((_) => {
   _.mdAppbar("toolbar", (_) => {
     _.mdToolbar((_) => {
-      _.mdIcon("menu")
+      if (_.mdIconButton("home", false)) {
+        _.$router.goto("/home")
+      }
       _.mdTitle("树洞后台管理平台")
       _.mdSpacer()
       _.mdIcon("star")

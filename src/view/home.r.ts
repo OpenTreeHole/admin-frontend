@@ -8,6 +8,9 @@ const tools = [
   }, {
     name: "用户封禁管理",
     route: "/ban"
+  }, {
+    name: "登出",
+    route: "/logout"
   }
 ]
 
