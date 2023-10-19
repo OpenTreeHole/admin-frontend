@@ -13,37 +13,56 @@ let update = view((_) => {
 
 let reg = d("")
 
+function current_tag_list() {
+  let reg_tester = new RegExp(reg.value)
+  return tag_list.filter((tag) => {
+    return reg_tester.test(tag.name)
+  })
+}
+
 export default view((_) => {
   if (tag_list.length === 0) {
     _.embed(update)
   }
-  _.$css`margin: 100px; margin-bottom: 20px;`
-  _.mdSheet((_) => {
-    _.mdTitle("Tag管理页面")
-    _.mdInput(reg, "筛选，支持正则表达式")
-    if (_.mdButton("刷新列表")) {
-      _.embed(update)
-    }
-  })
-
-  _.$css`margin: 100px; margin-top: 20px;`
-  _.mdSheet((_) => {
-    _.mdList((_) => {
-      _.for(
-      tag_list.filter((value) => {
-        return new RegExp(reg.value).test(value.name)
-      }),
-      (_item, index) => index,
-      (value, index) => {
-        _.mdListItem((_) => {
-          _._div({}, (_) => {
-            _.t(`${value.name}　　　热度: ${value.temperature.toString()}　　　id: ${value.id}`)
-
-          })
-          
-        })
+  _.$css`margin: 100px;`
+  _._div({}, (_) => {
+    _.$css`margin-top: 100px; margin-bottom: 20px;`
+    _.mdSheet((_) => {
+      _.mdTitle("Tag管理页面")
+      _.mdInput(reg, "筛选，支持正则表达式")
+      if (_.mdButton("刷新列表")) {
+        _.embed(update)
       }
-      )
-    }) // mdTable还没实现……错了哥别拷打我了
+    })
+  
+    _.$css`margin-button: 100px; margin-top: 20px;`
+    _.mdTable(
+      (_) => {
+        _._th({}, "#id")
+        _._th({}, "标签名")
+        _._th({}, "热度")
+        _._th({}, "操作")
+      },
+      (_) => {
+        _.for(
+          current_tag_list(),
+          (_item, index) => index,
+          (value, index) => {
+            _._tr({}, (_) => {
+              _._td({}, value.id)
+              _._td({}, value.name)
+              _._td({}, value.temperature)
+              // _.mdDialog("tag迁移", (_) => {
+
+              // }, (_) => {
+              //   _.mdButton
+              // })
+              _.$css`margin: 10px;`
+              _.mdIntrinsicButton("迁移", "primary", false)
+            })
+          }
+        )
+      }
+    )
   })
 })

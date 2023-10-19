@@ -12,6 +12,9 @@ let app = refina_app
   .use(Router);
 
 app((_) => {
+  
+  _.provideMDTheme("indigo", "red");
+  
   _.mdAppbar("toolbar", (_) => {
     _.mdToolbar((_) => {
       if (_.mdIconButton("home", false)) {
