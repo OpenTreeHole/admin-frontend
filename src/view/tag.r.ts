@@ -3,6 +3,7 @@ import { ListAllTagResponse, listAllTag } from "../api/tag/list";
 import { Tag } from "../api/tag/types";
 import { deleteATag } from "../api/tag/delete";
 import { CreateATag } from "../api/tag/create";
+import { toasts } from "../util/dialog";
 // import { toasts } from "../util/dialog";
 
 let tag_list: Tag[] = []
@@ -16,7 +17,7 @@ let update_data = view((_) => {
   listAllTag({}).then((data) => {
     tag_list = data
     filtered_list = tag_list.filter(() => true)
-    update_paging()
+    update_filter()
     _.$update()
   })
 })
@@ -122,17 +123,16 @@ export default view((_) => {
                         id: value.id,
                         to: target.value,
                       })
-                      console.log("Tag Deleted")
+                      toasts.success("修改成功")
                     } else (async () => {
-                      let new_tag = await CreateATag({
+                      await CreateATag({
                         name: target.value
                       })
-                      console.log("Tag Created", new_tag)
                       await deleteATag({
                         id: value.id,
                         to: target.value,
                       })
-                      console.log("Tag Deleted")
+                      toasts.success("修改成功")
                     })();
                   }
                   _.mdButton("取消") && close();
