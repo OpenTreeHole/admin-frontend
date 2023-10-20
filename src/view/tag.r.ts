@@ -1,6 +1,8 @@
 import { d, view } from "refina";
 import { ListAllTagResponse, listAllTag } from "../api/tag/list";
 import { Tag } from "../api/tag/types";
+import { deleteATag } from "../api/tag/delete";
+import { CreateATag } from "../api/tag/create";
 // import { toasts } from "../util/dialog";
 
 let tag_list: Tag[] = []
@@ -52,43 +54,6 @@ let update_target = view((_) => {
   }
 })
 
-let dialog = view((_) => _.mdDialog(
-  (_, open) => {
-    _.$css`margin: 10px;`
-    _.mdIntrinsicButton("迁移", "primary", false) && open();
-  },
-  "tag迁移",
-  (_) => {
-    if (_.mdInput(target, "目标标签")) {
-      _.embed(update_target)
-
-    }
-    if (target.value !== "") {
-      // _.mdIcon("star")
-      _._p({}, `备选项（超出20项将被隐藏） 目前有 ${target_filtered.length} 项`)
-      _.mdList((_) => {
-        _.for(
-          target_filtered.slice(0, 20),
-          (_item, index) => index,
-          (value, index) => {
-            if (_.mdListItem(value.name)) {
-              target.value = value.name
-              _.embed(update_target)
-            }
-          }
-        )
-      })
-    }
-  },
-  (_, close) => {
-    if (_.mdButton("确认")) {
-      close();
-      // do something
-    }
-    _.mdButton("取消") && close();
-  },
-))
-
 export default view((_) => {
   if (tag_list.length === 0) {
     _.embed(update_data)
@@ -123,7 +88,56 @@ export default view((_) => {
               _._td({}, value.id)
               _._td({}, value.name)
               _._td({}, value.temperature)
-              _.embed(dialog)
+              _.mdDialog(
+                (_, open) => {
+                  _.$css`margin: 10px;`
+                  _.mdIntrinsicButton("迁移", "primary", false) && open();
+                },
+                "tag迁移",
+                (_) => {
+                  if (_.mdInput(target, "目标标签")) {
+                    _.embed(update_target)
+                  }
+                  if (target.value !== "") {
+                    _._p({}, `备选项（超出20项将被隐藏） 目前有 ${target_filtered.length} 项`)
+                    _.mdList((_) => {
+                      _.for(
+                        target_filtered.slice(0, 20),
+                        (_item, index) => index,
+                        (value, index) => {
+                          if (_.mdListItem(value.name)) {
+                            target.value = value.name
+                            _.embed(update_target)
+                          }
+                        }
+                      )
+                    })
+                  }
+                },
+                (_, close) => {
+                  if (_.mdButton("确认")) {
+                    close();
+                    if (tag_list.filter((tag) => tag.name === target.value).length > 0) {
+                      deleteATag({
+                        id: value.id,
+                        to: target.value,
+                      })
+                      console.log("Tag Deleted")
+                    } else (async () => {
+                      let new_tag = await CreateATag({
+                        name: target.value
+                      })
+                      console.log("Tag Created", new_tag)
+                      await deleteATag({
+                        id: value.id,
+                        to: target.value,
+                      })
+                      console.log("Tag Deleted")
+                    })();
+                  }
+                  _.mdButton("取消") && close();
+                },
+              )
             })
           }
         )
