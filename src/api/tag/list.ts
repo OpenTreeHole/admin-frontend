@@ -1,16 +1,12 @@
 import { unwrap } from "../unwrap"
 import { axios_treehole as axios } from "../../util/axios"
+import { Tag } from "./types"
 
 export type ListAllTagRequest = {
     s?: string
 }
 
-export type ListAllTagResponse = {
-    id: number,
-    name: string,
-    temperature: number,
-    tag_id: number
-}[]
+export type ListAllTagResponse = Tag[]
 
 export async function listAllTag(req: ListAllTagRequest): Promise<ListAllTagResponse> {
     if (req.s !== undefined) {
