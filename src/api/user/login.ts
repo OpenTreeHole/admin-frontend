@@ -13,5 +13,5 @@ export type LoginResponse = {
 }
 
 export async function login(req: LoginRequest): Promise<LoginResponse> {
-    return await unwrap(axios.post('/login', req)) as LoginResponse
+    return await unwrap(() => axios.post('/login', req)) as LoginResponse
 }

@@ -19,7 +19,7 @@ export default view((_) => {
         email: email.value,
         password: password.value
       }).then((resp) => {
-        userStore.login(resp.access)
+        userStore.setToken(resp.access, resp.refresh)
         _.$router.goto("/home")
       })
     }

@@ -9,5 +9,5 @@ export type CreateATagRequest = {
 export type CreateATagResponse = Tag
 
 export async function CreateATag(req: CreateATagRequest): Promise<CreateATagResponse> {
-    return await unwrap(axios.post('/tags', req)) as CreateATagResponse
+    return await unwrap(() => axios.post('/tags', req)) as CreateATagResponse
 }

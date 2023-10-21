@@ -10,5 +10,5 @@ export type DeleteATagRequest = {
 export type DeleteATagResponse = Tag
 
 export async function deleteATag(req: DeleteATagRequest): Promise<DeleteATagResponse> {
-    return await unwrap(axios.delete(`/tags/${req.id}`, { data: { to: req.to } })) as DeleteATagResponse;
+    return await unwrap(() => axios.delete(`/tags/${req.id}`, { data: { to: req.to } })) as DeleteATagResponse;
 }

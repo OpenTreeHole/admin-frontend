@@ -10,8 +10,8 @@ export type ListAllTagResponse = Tag[]
 
 export async function listAllTag(req: ListAllTagRequest): Promise<ListAllTagResponse> {
     if (req.s !== undefined) {
-        return await unwrap(axios.get('/tags', { params: req })) as ListAllTagResponse
+        return await unwrap(() => axios.get('/tags', { params: req })) as ListAllTagResponse
     } else {
-        return await unwrap(axios.get('/tags')) as ListAllTagResponse
+        return await unwrap(() => axios.get('/tags')) as ListAllTagResponse
     }
 }
