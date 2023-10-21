@@ -2,24 +2,30 @@
   "name": "admin-frontend",
   "version": "0.0.1",
   "private": true,
+  "files": [
+    "./src/**/*",
+    "./index.html",
+    "./README.md"
+  ],
   "scripts": {
     "dev": "vite --open",
     "build": "vite build",
     "preview": "vite preview",
-    "check": "tsc --noEmit"
+    "check": "tsc --noEmit",
+    "prepare": "cd ./refina && pnpm i"
   },
   "devDependencies": {
-    "@refina/tsconfig": "link:..\\refina\\packages\\tsconfig",
+    "@refina/tsconfig": "link:.\\refina\\tsconfig",
     "typescript": "^5.2.2",
     "vite": "^4.4.11",
-    "vite-plugin-refina": "link:..\\refina\\packages\\plugin"
+    "vite-plugin-refina": "link:.\\refina\\plugin"
   },
   "dependencies": {
-    "@refina/basic-components": "link:..\\refina\\packages\\basic-components",
-    "@refina/mdui": "link:..\\refina\\packages\\mdui",
-    "@refina/router": "link:..\\refina\\packages\\router",
+    "@refina/basic-components": "link:.\\refina\\basic-components",
+    "@refina/mdui": "link:.\\refina\\mdui",
+    "@refina/router": "link:.\\refina\\router",
     "axios": "^1.5.1",
-    "refina": "link:..\\refina\\packages\\core",
+    "refina": "link:.\\refina\\core",
     "sweetalert2": "^11.7.32"
   }
 }
