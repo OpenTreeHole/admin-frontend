@@ -7,7 +7,7 @@ let email = d("")
 let password = d("")
 
 export default view((_) => {
-  _.$css`max-width: 800px; min-width: 300px; margin: 100px;`
+  _.$css`min-width: 300px; margin: 100px;`
   // _.$rootCss`display: flex;`
   // _.$css`align-self: center;`
   _.mdSheet((_) => {

@@ -6,7 +6,7 @@ export default view((_) => {
   _.route("/logout") && _.embed(() => import("./view/logout.r"));
   _.route("/home") && _.embed(() => import("./view/home.r"));
   _.route("/tag") && _.embed(() => import("./view/tag.r"));
-
+  _.route("/ban") && _.embed(() => import("./view/ban.r"));
 })
 
 export const beforeRoute = view((_) => {

@@ -17,7 +17,8 @@ const tools = [
 export default view((_) => {
   _.$css`margin: 100px;`
   _._div({}, (_) => {
-    _.$css`display: flex`
+    _.$css`display: grid`
+    _.$css`grid-template-columns: 1fr 1fr 1fr`
     _._div({}, (_) => {
       _.for(
         tools,

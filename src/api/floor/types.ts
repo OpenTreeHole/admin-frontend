@@ -1,0 +1,22 @@
+export type Floor = {
+    annoyname: string,
+    content: string,
+    deleted: boolean,
+    dislike: number,
+    disliked: boolean,
+    floor_id: number,
+    fold: string[],
+    fold_v2: string,
+    hole_id: number,
+    id: number,
+    is_me: boolean,
+    like: number,
+    liked: boolean,
+    mention: Floor[],
+    modified: number,
+    ranking: number,
+    reply_to: number,
+    special_tag: string,
+    time_created: string,
+    time_updated: string
+}
