@@ -1,31 +1,19 @@
 {
-  "name": "admin-frontend",
-  "version": "0.0.1",
+  "name": "nuxt-app",
   "private": true,
-  "files": [
-    "./src/**/*",
-    "./index.html",
-    "./README.md"
-  ],
+  "type": "module",
   "scripts": {
-    "dev": "vite --open",
-    "build": "vite build",
-    "preview": "vite preview",
-    "check": "tsc --noEmit",
-    "prepare": "cd ./refina && pnpm i"
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
   },
   "devDependencies": {
-    "@refina/tsconfig": "link:.\\refina\\tsconfig",
-    "typescript": "^5.2.2",
-    "vite": "^4.4.11",
-    "vite-plugin-refina": "link:.\\refina\\plugin"
-  },
-  "dependencies": {
-    "@refina/basic-components": "link:.\\refina\\basic-components",
-    "@refina/mdui": "link:.\\refina\\mdui",
-    "@refina/router": "link:.\\refina\\router",
-    "axios": "^1.5.1",
-    "refina": "link:.\\refina\\core",
-    "sweetalert2": "^11.7.32"
+    "@element-plus/nuxt": "^1.0.7",
+    "element-plus": "^2.6.1",
+    "nuxt": "^3.9.3",
+    "vue": "^3.4.14",
+    "vue-router": "^4.2.5"
   }
 }
