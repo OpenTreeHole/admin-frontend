@@ -2,8 +2,12 @@
 
 export default defineNuxtConfig({
   modules: [
-    '@element-plus/nuxt'
+    '@element-plus/nuxt',
+    '@pinia/nuxt'
   ],
   elementPlus: { /** Options */ },
-  devtools: { enabled: true }
+  devtools: { enabled: true },
+  pinia: {
+    storesDirs: ['./store/**'],
+  },
 })
