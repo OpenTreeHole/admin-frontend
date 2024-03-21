@@ -1,13 +1,20 @@
 <template>
-    <p>123</p>
+    <Direct :target="target"/>
 </template>
 
 <script setup>
 
 import { useLayoutStore } from '@/store/layout'
-
 const layoutStore = useLayoutStore()
 
-layoutStore.title = '666'
+layoutStore.title = 'Home'
+layoutStore.path = [
+    { name: "Home", path: "/" }
+]
+
+const target = [
+    { desc: "Home", path: "/" },
+    { desc: "About", path: "/about" },
+]
 
 </script>
