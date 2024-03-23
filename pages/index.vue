@@ -14,6 +14,7 @@ layoutStore.path = [
 
 const target = [
     { desc: "Home", path: "/" },
+    { desc: "User", path: "/user" },
     { desc: "About", path: "/about" },
 ]
 
