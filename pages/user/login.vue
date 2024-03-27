@@ -1,7 +1,7 @@
 <template>
     <el-form :model="login_form">
-        <el-form-item label="Username">
-            <el-input v-model="login_form.username" />
+        <el-form-item label="Email">
+            <el-input v-model="login_form.email" />
         </el-form-item>
         <el-form-item label="Password">
             <el-input v-model="login_form.password" />
@@ -14,8 +14,9 @@
 </template>
 
 <script setup>
-
 import { useLayoutStore } from '@/store/layout'
+import { api, Server } from '@/util/api'
+
 const layoutStore = useLayoutStore()
 
 layoutStore.title = "Login"
@@ -25,13 +26,23 @@ layoutStore.path = [
 ]
 
 let login_form = reactive({
-    username: "",
+    email: "",
     password: ""
 })
 
-const submit = () => {
-    console.log(login_form.username)
+const submit = async () => {
+    console.log(login_form.email)
     console.log(login_form.password)
+    
+    let resp = await useFetch(api(Server.AUTH, '/login'), {
+        method: 'POST',
+        body: {
+            email: login_form.email,
+            password: login_form.password
+        }
+    })
+
+    console.log(resp.data.value.access)
 }
 
 </script>
