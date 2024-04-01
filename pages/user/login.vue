@@ -16,7 +16,6 @@
 <script setup>
 import { useLayoutStore } from '@/store/layout'
 import { useUserStore } from '@/store/user'
-import { api, Server } from '@/util/api'
 import { callApi } from '@/util/callApi'
 
 const layoutStore = useLayoutStore()
@@ -25,6 +24,7 @@ const userStore = useUserStore();
 
 layoutStore.title = "Login"
 layoutStore.path = [
+    { name: "Home", path: "/" },
     { name: "User", path: '/user' },
     { name: "Login" }
 ]
@@ -36,7 +36,7 @@ let login_form = reactive({
 
 const submit = async () => {
     
-    let resp = await callApi(Server.AUTH, '/login', {
+    let resp = await callApi('AUTH', '/login', {
         method: 'POST',
         body: {
             email: login_form.email,
@@ -46,7 +46,7 @@ const submit = async () => {
 
     userStore.access_token = resp.data.value.access;
     userStore.refresh_token = resp.data.value.refresh;
-    
+
     if (userStore.logined) {
         router.push('/')
     }

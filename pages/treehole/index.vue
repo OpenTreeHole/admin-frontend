@@ -9,6 +9,7 @@ const layoutStore = useLayoutStore()
 
 layoutStore.title = "Treehole"
 layoutStore.path = [
+    { name: "Home", path: "/" },
     { name: "Treehole", path: '/treehole' }
 ]
 
