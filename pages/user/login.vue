@@ -15,9 +15,13 @@
 
 <script setup>
 import { useLayoutStore } from '@/store/layout'
+import { useUserStore } from '@/store/user'
 import { api, Server } from '@/util/api'
+import { callApi } from '@/util/callApi'
 
 const layoutStore = useLayoutStore()
+const router = useRouter()
+const userStore = useUserStore();
 
 layoutStore.title = "Login"
 layoutStore.path = [
@@ -31,10 +35,8 @@ let login_form = reactive({
 })
 
 const submit = async () => {
-    console.log(login_form.email)
-    console.log(login_form.password)
     
-    let resp = await useFetch(api(Server.AUTH, '/login'), {
+    let resp = await callApi(Server.AUTH, '/login', {
         method: 'POST',
         body: {
             email: login_form.email,
@@ -42,7 +44,13 @@ const submit = async () => {
         }
     })
 
-    console.log(resp.data.value.access)
+    userStore.access_token = resp.data.value.access;
+    userStore.refresh_token = resp.data.value.refresh;
+    
+    if (userStore.logined) {
+        router.push('/')
+    }
 }
+
 
 </script>
