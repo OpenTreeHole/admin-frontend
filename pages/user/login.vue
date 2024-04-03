@@ -17,6 +17,7 @@
 import { useLayoutStore } from '@/store/layout'
 import { useUserStore } from '@/store/user'
 import { callApi } from '@/util/callApi'
+import { loginSchema } from '@/api/user/login';
 
 const layoutStore = useLayoutStore()
 const router = useRouter()
@@ -36,17 +37,36 @@ let login_form = reactive({
 
 const submit = async () => {
     
-    let resp = await callApi('AUTH', '/login', {
-        method: 'POST',
-        body: {
-            email: login_form.email,
-            password: login_form.password
-        }
+    const { type, data } = await callApi(loginSchema, {
+        email: login_form.email,
+        password: login_form.password
     })
 
-    if (userStore.login(resp.data.value.access, resp.data.value.refresh)) {
+    if (type == 'success') {
+        userStore.login(data.access, data.refresh)
+        ElNotification({
+            title: 'Successfully logined',
+            message: data.message,
+            position: 'bottom-right',
+            type: 'success'
+        })
         router.push('/')
+    } else if (type == 'fail') {
+        ElNotification({
+            title: 'Failed to logined',
+            message: data.message,
+            position: 'bottom-right',
+            type: 'error'
+        })
+    } else {
+        ElNotification({
+            title: 'Unknown error',
+            message: '?',
+            position: 'bottom-right',
+            type: 'error'
+        })
     }
+    
 }
 
 
