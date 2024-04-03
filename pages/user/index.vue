@@ -14,7 +14,8 @@ layoutStore.path = [
 ]
 
 const target = [
-    { desc: "Login", path: "/user/login" }
+    { desc: "Login", path: "/user/login" },
+    { desc: "Logout", path: "/user/logout" }
 ]
 
 </script>

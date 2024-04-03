@@ -44,10 +44,7 @@ const submit = async () => {
         }
     })
 
-    userStore.access_token = resp.data.value.access;
-    userStore.refresh_token = resp.data.value.refresh;
-
-    if (userStore.logined) {
+    if (userStore.login(resp.data.value.access, resp.data.value.refresh)) {
         router.push('/')
     }
 }
