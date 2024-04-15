@@ -1,10 +1,9 @@
 import { useUserStore } from "@/store/user"
 import { URL_MAPPER } from "./env"
-
 import Ajv, { type Schema } from 'ajv'
 const ajv = new Ajv()
 
-export async function callApi(schema: any, data: any, config: any = {}) {
+export async function callApi(schema: any, payload: any, config: any = {}) {
     
     const NoResponse = {
         type: undefined,
@@ -12,8 +11,8 @@ export async function callApi(schema: any, data: any, config: any = {}) {
     }
 
     // check the request
-    if (!ajv.validate(schema.requestSchema, data)) {
-        console.error(`Invalid request data. Schema: ${schema.name}, Request: ${data}`)
+    if (!ajv.validate(schema.requestSchema, payload)) {
+        console.error(`Invalid request data. Schema: ${schema.name}, Request: ${payload}`)
         return NoResponse
     }
 
@@ -35,77 +34,32 @@ export async function callApi(schema: any, data: any, config: any = {}) {
     config.lazy = false
 
     if (schema.method !== 'GET') {
-        config.body = data
+        config.body = payload
     } else {
-        config.query = data
+        config.query = payload
     }
 
-    // set callbacks
-    let ret: any, status_code: number
-    
-    config.onResponse = ({ request, response, options }) => {
-        // console.log('resp', response)
-        // console.log(response.status)
+    let status_code, ret
+
+    config.onResponse = function({ request, response, options }) {
         status_code = response.status
         ret = response._data
+        console.log(status_code, ret)
     }
 
-    // config.onResponseError = ({ request, response, options }) => {
-    //     console.log('err', response)
-    // }
-
-    // config.onRequest = ({ request, options }) => {
-    //     console.log(request, options)
-    // }
+    await useFetch(path, config)
     
-    // console.log(path, config)
-
-    // call useFetch
-
-    await useFetch(path, config).then(resp => {
-        // const { data, error, status } = resp
-        // console.log("data", data)
-        // console.log("error", error)
-        // console.log("status", status)
-        // console.log(status_code)
-        console.log(ret, status_code)
-        for (let cur_schema in schema.responseSchema) {
-            if (schema.responseSchema[cur_schema].status.includes(status_code)
-            &&  ajv.validate(schema.responseSchema[cur_schema].schema, ret)) {
-                return {
-                    type: cur_schema,
-                    data: ret
-                }
+    for (let cur_schema in schema.responseSchema) {
+        console.log(schema.responseSchema[cur_schema])
+        if (schema.responseSchema[cur_schema].status.includes(status_code)
+        &&  ajv.validate(schema.responseSchema[cur_schema].schema, ret)) {
+            return {
+                type: cur_schema,
+                data: ret
             }
         }
-    }).catch(err => {
-        console.log(ret, status_code)
-        for (let cur_schema in schema.responseSchema) {
-            if (schema.responseSchema[cur_schema].status.includes(status_code)
-            &&  ajv.validate(schema.responseSchema[cur_schema].schema, ret)) {
-                return {
-                    type: cur_schema,
-                    data: ret
-                }
-            }
-        }
-    })
-
-    // const {execute} = await useFetch(path, config)
-    // execute().then(() => {
-        // console.log(ret, status_code)
-    // })
-
-    // use refresh_token when token expred
-    // Todo
-    // setTimeout(function (){
-        
-        // console.log(ret, status_code)
-    // }, 1000);
-
-
-
-    // check the response schema
+    }
     console.log("No matched schema")
     return NoResponse
+
 }

@@ -17,7 +17,7 @@
 import { useLayoutStore } from '@/store/layout'
 import { useUserStore } from '@/store/user'
 import { callApi } from '@/util/callApi'
-import { loginSchema } from '@/api/user/login';
+import { loginSchema } from '@/api/user/login'
 
 const layoutStore = useLayoutStore()
 const router = useRouter()
@@ -36,7 +36,7 @@ let login_form = reactive({
 })
 
 const submit = async () => {
-    
+
     const { type, data } = await callApi(loginSchema, {
         email: login_form.email,
         password: login_form.password
@@ -61,7 +61,7 @@ const submit = async () => {
     } else {
         ElNotification({
             title: 'Unknown error',
-            message: '?',
+            message: '网络错误',
             position: 'bottom-right',
             type: 'error'
         })
