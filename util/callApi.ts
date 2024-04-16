@@ -3,7 +3,7 @@ import { URL_MAPPER } from "./env"
 import Ajv, { type Schema } from 'ajv'
 const ajv = new Ajv()
 
-export async function callApi(schema: any, payload: any, config: any = {}) {
+export async function callApi(schema: any, payload: any, config: any = {}, param: any = {}) {
     
     const NoResponse = {
         type: undefined,
