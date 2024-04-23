@@ -1,10 +1,13 @@
 import { useUserStore } from "@/store/user"
-import { URL_MAPPER } from "./env"
 import Ajv, { type Schema } from 'ajv'
 const ajv = new Ajv()
 
 export async function callApi(schema: any, payload: any, config: any = {}, param: any = {}) {
-    
+    const runtimeConfig = useRuntimeConfig()
+    const AUTH = runtimeConfig.public.authBase
+    const TREEHOLE = runtimeConfig.public.treeHoleBase
+    const URL_MAPPER = { AUTH, TREEHOLE }
+
     const NoResponse = {
         type: undefined,
         data: undefined
@@ -20,7 +23,7 @@ export async function callApi(schema: any, payload: any, config: any = {}, param
     const userStore = useUserStore()
 
     if (schema.token) {
-        if (! userStore.logined) {
+        if (!userStore.logined) {
             console.error('Token required but user not logged in.')
             return NoResponse
         }
@@ -46,18 +49,18 @@ export async function callApi(schema: any, payload: any, config: any = {}, param
 
     let status_code, ret
 
-    config.onResponse = function({ request, response, options }) {
+    config.onResponse = function ({ request, response, options }) {
         status_code = response.status
         ret = response._data
         console.log(status_code, ret)
     }
 
     await useFetch(path, config)
-    
+
     for (let cur_schema in schema.responseSchema) {
         // console.log(schema.responseSchema[cur_schema])
         if (schema.responseSchema[cur_schema].status.includes(status_code)
-        &&  ajv.validate(schema.responseSchema[cur_schema].schema, ret)) {
+            && ajv.validate(schema.responseSchema[cur_schema].schema, ret)) {
             return {
                 type: cur_schema,
                 data: ret

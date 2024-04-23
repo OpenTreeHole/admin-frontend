@@ -1,17 +1,17 @@
 # Admin-frontend
 
-How to run the code:
+Create `.env` and set `NUXT_PUBLIC_AUTH_BASE` and `NUXT_PUBLIC_TREE_HOLE_BASE` in it.
 
-create a file at util/env.ts and write:
+Then, run `pnpm dev` to start the dev server.
 
-```ts
-export const AUTH = "https://url-to-auth/api"
+In production environment, the `.env` will not be loaded. Please set the environment before running.
 
-export const TREEHOLE = "https://url-to-fdu-hole/api"
+```bash
+export NUXT_PUBLIC_AUTH_BASE="https://url-to-auth/api"
+export NUXT_PUBLIC_TREE_HOLE_BASE="https://url-to-fdu-hole/api"
+```
 
-export const URL_MAPPER: {
-    [key: string]: string
-} = {
-    AUTH, TREEHOLE
-}
+```powershell
+$env:NUXT_PUBLIC_AUTH_BASE="https://url-to-auth/api"
+$env:NUXT_PUBLIC_TREE_HOLE_BASE="https://url-to-fdu-hole/api"
 ```
