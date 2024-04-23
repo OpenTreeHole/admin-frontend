@@ -1,75 +1,17 @@
-# Nuxt 3 Minimal Starter
+# Admin-frontend
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+How to run the code:
 
-## Setup
+create a file at util/env.ts and write:
 
-Make sure to install the dependencies:
+```ts
+export const AUTH = "https://url-to-auth/api"
 
-```bash
-# npm
-npm install
+export const TREEHOLE = "https://url-to-fdu-hole/api"
 
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
+export const URL_MAPPER: {
+    [key: string]: string
+} = {
+    AUTH, TREEHOLE
+}
 ```
-
-## Development Server
-
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm run dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm run build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm run preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
