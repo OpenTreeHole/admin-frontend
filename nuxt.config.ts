@@ -13,5 +13,11 @@ export default defineNuxtConfig({
   },
   piniaPersistedstate: {
     storage: 'cookies',
+  },
+  runtimeConfig: {
+    public: {
+      authBase: '',
+      treeHoleBase: '',
+    }
   }
 })
