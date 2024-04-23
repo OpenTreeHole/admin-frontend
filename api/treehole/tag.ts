@@ -84,5 +84,14 @@ export const tagDeleteResponseSchema = {
 export const tagDeleteSchema = {
     name: 'tag-delete',
     base: 'TREEHOLE',
-    // /api/tags/:id
+    path: '/api/tags/:id:',
+    method: 'DELETE',
+    token: true,
+    requestSchema: tagDeleteRequestSchema,
+    responseSchema: {
+        success: {
+            status: [200],
+            schema: tagDeleteResponseSchema
+        }
+    }
 }

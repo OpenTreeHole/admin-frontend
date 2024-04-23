@@ -31,7 +31,12 @@ export async function callApi(schema: any, payload: any, config: any = {}, param
         config.headers["Authorization"] = `Bearer ${userStore.access_token}`
     }
 
-    const path = URL_MAPPER[schema.base] + schema.path
+    let path = URL_MAPPER[schema.base] + schema.path
+
+    for (let cur_param in param) {
+        path = path.replace(`:${cur_param}:`, param[cur_param])
+    }
+
     config.method = schema.method
 
     config.lazy = false
