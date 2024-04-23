@@ -23,6 +23,14 @@
                 <el-table-column prop="id" label="ID"/>
                 <el-table-column prop="name" label="Name"/>
                 <el-table-column prop="temperature" label="Temperature"/>
+                <el-table-column label="Operations">
+                    <template #default="scope">
+                        <el-button
+                            type="danger"
+                            @click="handleTransfer(scope.$index + (current_page - 1) * 20)"
+                        >迁移</el-button>
+                    </template>
+                </el-table-column>
             </el-table>
         </client-only>
         <el-pagination
@@ -36,13 +44,32 @@
     <template v-else>
         <el-empty description="No Data" />
     </template>
+    <el-dialog
+        v-model="dialog_visibility"
+        title="Transfer Tag"
+        width="30%"
+    >
+        <el-input
+            v-model="transfer.to"
+            placeholder="请输入要迁移到的Tag"
+        />
+        <template #footer>
+            <span class="dialog-footer">
+                <el-button @click="closeDialog()">Cancel</el-button>
+                <el-button
+                    type="primary"
+                    @click="transfer_tag"
+                >Confirm</el-button>
+            </span>
+        </template>
+    </el-dialog>
 </template>
 
 <script setup async>
 
 import { useLayoutStore } from '@/store/layout'
 import { callApi } from '@/util/callApi'
-import { tagListSchema } from '~/api/treehole/tag'
+import { tagListSchema, tagDeleteSchema, tagCreateSchema } from '~/api/treehole/tag'
 
 const layoutStore = useLayoutStore()
 
@@ -104,8 +131,94 @@ function handleTagInput() {
 }
 
 function changePage(to) {
-    current_page.value = to;
+    current_page.value = to
     search.current_tag = search.filtered_tag.slice((current_page.value - 1) * 20, current_page.value * 20)
+}
+
+const dialog_visibility = ref(false)
+
+const transfer = reactive({
+    from_id: 0,
+    to: "",
+})
+
+function handleTransfer(scope) {
+    transfer.from_id = search.current_tag[scope].id
+    dialog_visibility.value = true
+}
+
+function closeDialog() {
+    dialog_visibility.value = false
+    transfer.to = ""
+}
+
+async function transfer_tag() {
+    dialog_visibility.value = false
+
+    if (transfer.to.length == 0) {
+        ElNotification({
+            title: 'Error',
+            message: 'Tag cannot be empty',
+            position: 'bottom-right',
+            type: 'error'
+        })
+
+        return
+    }
+
+    // find if the target tag exists
+    const target_tag = search.all_tag.find(item => item.name == transfer.to)
+
+    if (target_tag == undefined) {
+        const { type, data } = await callApi(tagCreateSchema, {
+            name: transfer.to
+        })
+        console.log('create', type, data)
+        if (type !== 'success') {
+            ElNotification({
+                title: 'Error',
+                // message: data.message,
+                position: 'bottom-right',
+                type: 'error'
+            })
+
+            return
+        }
+    }
+
+    // find if the target tag is the same as the current tag
+    if (target_tag.id == transfer.from_id) {
+        ElNotification({
+            title: 'Error',
+            message: 'Tag cannot be the same as the current tag',
+            position: 'bottom-right',
+            type: 'error'
+        })
+
+        return
+    }
+
+    const { type, data } = await callApi(tagDeleteSchema)
+
+    if (type !== 'success') {
+        ElNotification({
+            title: 'Error',
+            // message: data.message,
+            position: 'bottom-right',
+            type: 'error'
+        })
+
+        return
+    }
+
+    ElNotification({
+        title: 'Successfully transfered tag',
+        // message: data.message,
+        position: 'bottom-right',
+        type: 'success'
+    })
+
+    transfer.to = ""
 }
 
 </script>

@@ -55,7 +55,7 @@ export async function callApi(schema: any, payload: any, config: any = {}, param
     await useFetch(path, config)
     
     for (let cur_schema in schema.responseSchema) {
-        console.log(schema.responseSchema[cur_schema])
+        // console.log(schema.responseSchema[cur_schema])
         if (schema.responseSchema[cur_schema].status.includes(status_code)
         &&  ajv.validate(schema.responseSchema[cur_schema].schema, ret)) {
             return {
