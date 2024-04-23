@@ -15,18 +15,20 @@
         </el-form-item>
     </el-form>
     <template v-if="search.current_tag.length > 0">
-        <el-table
-            :data="search.current_tag"
-            style="width: 100%;"
-        >
-            <el-table-column prop="id" label="ID"/>
-            <el-table-column prop="name" label="Name"/>
-            <el-table-column prop="temperature" label="Temperature"/>
-        </el-table>
+        <client-only>
+            <el-table
+                :data="search.current_tag"
+                style="width: 100%;"
+            >
+                <el-table-column prop="id" label="ID"/>
+                <el-table-column prop="name" label="Name"/>
+                <el-table-column prop="temperature" label="Temperature"/>
+            </el-table>
+        </client-only>
         <el-pagination
             layout="prev, pager, next"
             :total="search.total_page"
-            :current-page="search.current_page"
+            :current-page="current_page"
             @update:current-page="changePage"
         />
     </template>
@@ -51,10 +53,11 @@ layoutStore.path = [
     { name: "Tag" }
 ]
 
+const current_page = ref(1)
+
 const search = reactive({
     all_tag: [],
     filtered_tag: [], // all_tag filtered by tag
-    current_page: 1,
     current_tag: [],
     tag: "",
     total_page: 0,
@@ -87,7 +90,7 @@ function dataChange(data) {
     // reset the paging.
     search.current_tag = search.filtered_tag.slice(0, 20)
     search.total_page = Math.ceil(search.filtered_tag.length / 20)
-    search.current_page = 1
+    current_page.value = 1
 }
 
 function handleTagInput() {
@@ -100,8 +103,9 @@ function handleTagInput() {
     }
 }
 
-function changePage() {
-
+function changePage(to) {
+    current_page.value = to;
+    search.current_tag = search.filtered_tag.slice((current_page.value - 1) * 20, current_page.value * 20)
 }
 
 </script>
