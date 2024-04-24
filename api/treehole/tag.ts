@@ -56,12 +56,12 @@ export const tagCreateSchema = {
     name: 'tag-create',
     base: 'TREEHOLE',
     path: '/tags',
-    method: 'CREATE',
+    method: 'POST',
     token: true,
     requestSchema: tagCreateRequestSchema,
     responseSchema: {
         success: {
-            status: [200],
+            status: [200, 201],
             schema: tagCreateSuccessfulResponseSchema
         }
     }
@@ -84,7 +84,7 @@ export const tagDeleteResponseSchema = {
 export const tagDeleteSchema = {
     name: 'tag-delete',
     base: 'TREEHOLE',
-    path: '/api/tags/:id:',
+    path: '/tags/:id:',
     method: 'DELETE',
     token: true,
     requestSchema: tagDeleteRequestSchema,

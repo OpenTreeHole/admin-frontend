@@ -2,11 +2,7 @@ import { useUserStore } from "@/store/user"
 import Ajv, { type Schema } from 'ajv'
 const ajv = new Ajv()
 
-export async function callApi(schema: any, payload: any, config: any = {}, param: any = {}) {
-    const runtimeConfig = useRuntimeConfig()
-    const AUTH = runtimeConfig.public.authBase
-    const TREEHOLE = runtimeConfig.public.treeHoleBase
-    const URL_MAPPER = { AUTH, TREEHOLE }
+export async function callApi(schema: any, payload: any, param: any = {}, config: any = {}) {
 
     const NoResponse = {
         type: undefined,
@@ -31,14 +27,15 @@ export async function callApi(schema: any, payload: any, config: any = {}, param
         config.headers["Authorization"] = `Bearer ${userStore.access_token}`
     }
 
-    let path = URL_MAPPER[schema.base] + schema.path
+    let path = `/${schema.base}${schema.path}`
 
     for (let cur_param in param) {
+        console.log(cur_param, param[cur_param])
         path = path.replace(`:${cur_param}:`, param[cur_param])
     }
 
     config.method = schema.method
-
+    config.server = false
     config.lazy = false
 
     if (schema.method !== 'GET') {
@@ -58,7 +55,6 @@ export async function callApi(schema: any, payload: any, config: any = {}, param
     await useFetch(path, config)
 
     for (let cur_schema in schema.responseSchema) {
-        // console.log(schema.responseSchema[cur_schema])
         if (schema.responseSchema[cur_schema].status.includes(status_code)
             && ajv.validate(schema.responseSchema[cur_schema].schema, ret)) {
             return {

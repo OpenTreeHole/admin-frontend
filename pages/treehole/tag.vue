@@ -80,31 +80,29 @@ layoutStore.path = [
     { name: "Tag" }
 ]
 
+// the following code is mess
+// but it works
+
 const current_page = ref(1)
 
 const search = reactive({
-    all_tag: [],
+    all_tag: [], // all the tags fetched from the server
     filtered_tag: [], // all_tag filtered by tag
-    current_tag: [],
-    tag: "",
-    total_page: 0,
-    current_path: 1
+    current_tag: [], // tags to be displayed
+    tag: "", // the regex user inputed
+    total_page: 0
 })
 
-async function load() {
-    if (search.all_tag.length > 0) {
-        return;
-    }
+async function load() { // load the tags from the server
 
-    const { type, data } = await callApi(tagListSchema, { tag: search.tag })
-    // console.log(data)
+    const { type, data } = await callApi(tagListSchema, {})
 
+    search.tag = ""
     if (type == 'success') {
         search.all_tag = data
-        dataChange(data)
+        dataChange(data) // dataChange called when filtered_tag should be changed.
         ElNotification({
             title: 'Successfully loaded data',
-            // message: data.message,
             position: 'bottom-right',
             type: 'success'
         })
@@ -121,6 +119,8 @@ function dataChange(data) {
 }
 
 function handleTagInput() {
+    // when the input changes
+    // flush the filtered_tag
     try {
         let reg = new RegExp(search.tag)
         dataChange(search.all_tag.filter(item => reg.test(item.name)))
@@ -130,7 +130,7 @@ function handleTagInput() {
     }
 }
 
-function changePage(to) {
+function changePage(to) { // the page changed, update the view
     current_page.value = to
     search.current_tag = search.filtered_tag.slice((current_page.value - 1) * 20, current_page.value * 20)
 }
@@ -144,11 +144,12 @@ const transfer = reactive({
 
 function handleTransfer(scope) {
     transfer.from_id = search.current_tag[scope].id
-    dialog_visibility.value = true
+    dialog_visibility.value = true // open the dialog
 }
 
 function closeDialog() {
     dialog_visibility.value = false
+    // do nothing
     transfer.to = ""
 }
 
@@ -158,7 +159,7 @@ async function transfer_tag() {
     if (transfer.to.length == 0) {
         ElNotification({
             title: 'Error',
-            message: 'Tag cannot be empty',
+            message: 'Tag cannot be empty.',
             position: 'bottom-right',
             type: 'error'
         })
@@ -173,32 +174,32 @@ async function transfer_tag() {
         const { type, data } = await callApi(tagCreateSchema, {
             name: transfer.to
         })
-        console.log('create', type, data)
+        
         if (type !== 'success') {
             ElNotification({
                 title: 'Error',
-                // message: data.message,
+                message: 'Failed to create tag.',
                 position: 'bottom-right',
                 type: 'error'
             })
-
             return
         }
-    }
-
-    // find if the target tag is the same as the current tag
-    if (target_tag.id == transfer.from_id) {
+    } else if (target_tag.id == transfer.from_id) {
+        // find if the target tag is the same as the current tag
         ElNotification({
             title: 'Error',
-            message: 'Tag cannot be the same as the current tag',
+            message: 'Tag cannot be the same as the current tag.',
             position: 'bottom-right',
             type: 'error'
         })
-
         return
     }
 
-    const { type, data } = await callApi(tagDeleteSchema)
+    const { type, data } = await callApi(tagDeleteSchema, {
+        to: transfer.to // payloads
+    }, {
+        id: transfer.from_id // params
+    })
 
     if (type !== 'success') {
         ElNotification({
@@ -217,6 +218,8 @@ async function transfer_tag() {
         position: 'bottom-right',
         type: 'success'
     })
+
+    await load(); // the tags have changed, reload it to sync
 
     transfer.to = ""
 }
