@@ -4,6 +4,11 @@ const ajv = new Ajv()
 
 export async function callApi(schema: any, payload: any, param: any = {}, config: any = {}) {
 
+    const runtimeConfig = useRuntimeConfig()
+    const AUTH = runtimeConfig.public.authBase
+    const TREEHOLE = runtimeConfig.public.treeHoleBase
+    const URL_MAPPER = { AUTH, TREEHOLE }
+
     const NoResponse = {
         type: undefined,
         data: undefined
@@ -27,7 +32,7 @@ export async function callApi(schema: any, payload: any, param: any = {}, config
         config.headers["Authorization"] = `Bearer ${userStore.access_token}`
     }
 
-    let path = `/${schema.base}${schema.path}`
+    let path = URL_MAPPER[schema.base] + schema.path
 
     for (let cur_param in param) {
         console.log(cur_param, param[cur_param])
