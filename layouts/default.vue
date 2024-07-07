@@ -12,10 +12,22 @@
                     style="height: 100%"
                 >
                     <el-col :span="2"></el-col>
-                    <el-col :span="2">这里是标题栏</el-col>
-                    <el-col :span="2"></el-col>
-                    <el-col :span="2">以后可以放一些快捷工具和登录</el-col>
-                    <el-col :span="16"></el-col>
+                    <el-col :span="8">🌴管理后台🌴</el-col>
+                    <el-col :span="6"></el-col>
+                    <template v-if="user_store.logined">
+                        <el-col :span="4">
+                            <el-text>{{ user_store.username }}</el-text>
+                        </el-col>
+                        <el-col :span="1"></el-col>
+                        <el-col :span="3">
+                            <el-button type="danger" plain @click="logout">登出</el-button>
+                        </el-col>
+                    </template>
+                    <template v-else>
+                        <el-col :span="8">
+                            <el-button type="primary" plain @click="login">登录</el-button>
+                        </el-col>
+                    </template>
                 </el-row>
             </el-header>
             <el-main
@@ -34,6 +46,7 @@
                     "
                 >
                     <el-page-header
+                        @back="goBack"
                     >
                         <template #breadcrumb>
                             <el-breadcrumb separator="/">
@@ -73,8 +86,20 @@
 
 <script setup>
 
-import { useLayoutStore } from '../store/layout'
-
 const layout_store = useLayoutStore()
+const user_store = useUserStore()
+
+function goBack() {
+    useRouter().push('/')
+}
+
+function login() {
+    useRouter().push('/user/login')
+}
+
+function logout() {
+    user_store.logout()
+    useRouter().push('/user/login')
+}
 
 </script>

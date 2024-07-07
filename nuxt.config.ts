@@ -36,5 +36,8 @@ export default defineNuxtConfig({
         prependPath: true,
       }
     }
-  }
+  },
+  app: {
+    pageTransition: { name: 'page', mode: 'out-in' }
+  },
 })

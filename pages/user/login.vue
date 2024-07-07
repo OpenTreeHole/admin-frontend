@@ -44,6 +44,8 @@ const submit = async () => {
 
     if (type == 'success') {
         userStore.login(data.access, data.refresh)
+        const username = login_form.email.slice(0, login_form.email.search('@'))
+        userStore.setUsername(username)
         ElNotification({
             title: 'Successfully logined',
             message: data.message,

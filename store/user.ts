@@ -3,7 +3,8 @@ import { defineStore } from "pinia"
 export const useUserStore = defineStore('user', {
     state: () => ({
         access_token: undefined,
-        refresh_token: undefined
+        refresh_token: undefined,
+        username: ""
     }),
     // getters
     getters: {
@@ -23,6 +24,9 @@ export const useUserStore = defineStore('user', {
         logout() {
             this.access_token = undefined
             this.refresh_token = undefined
+        },
+        setUsername(username: string) {
+            this.username = username
         }
     },
     persist: true
