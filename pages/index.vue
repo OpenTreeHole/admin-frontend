@@ -15,7 +15,8 @@ layoutStore.path = [
 const target = [
     // { desc: "User", path: "/user" },
     // { desc: "Treehole", path: "/treehole" }
-    { desc: "茶楼 Tag 管理", path: '/treehole/tag' }
+    { desc: "茶楼 Tag 管理", path: '/treehole/tag' },
+    { desc: "发送站内信", path: '/treehole/message' }
 ]
 
 </script>
