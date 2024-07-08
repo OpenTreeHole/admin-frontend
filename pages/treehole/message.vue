@@ -7,6 +7,8 @@
     type="textarea"
   />
   <div style="margin: 10px;" />
+  <el-button v-for="item in default_message" @click="message=item.content">{{ item.title }}</el-button>
+  <div style="margin: 10px;" />
   <el-text class="mx-1" style="margin: 5px;">收件人</el-text>
   <el-input v-model="receiver" placeholder="输入英文逗号分隔的数字"></el-input>
   <div style="margin: 20px;" />
@@ -50,5 +52,10 @@ async function send() {
         })
     }
 }
+
+const default_message = [
+    { title: "清空", content: "" },
+    { title: "截图外传", content: "检测到您外传茶楼截图，特此警告。如有下次，将依据社区公约封禁。"}
+]
 
 </script>
