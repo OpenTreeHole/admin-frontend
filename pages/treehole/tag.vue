@@ -37,6 +37,7 @@
             layout="prev, pager, next"
             :total="search.total_page"
             :current-page="current_page"
+            :default-page-size="1"
             @update:current-page="changePage"
         />
     </template>
@@ -115,6 +116,7 @@ function dataChange(data) {
     // reset the paging.
     search.current_tag = search.filtered_tag.slice(0, 20)
     search.total_page = Math.ceil(search.filtered_tag.length / 20)
+    console.log("TotalPage changd to ", search.total_page)
     current_page.value = 1
 }
 
