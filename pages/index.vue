@@ -16,7 +16,10 @@ const target = [
     // { desc: "User", path: "/user" },
     // { desc: "Treehole", path: "/treehole" }
     { desc: "茶楼 Tag 管理", path: '/treehole/tag' },
-    { desc: "发送站内信", path: '/treehole/message' }
+    { desc: "发送站内信", path: '/treehole/message' },
+    { desc: "我的解密历史", path: '/decrypt/history' },
+    { desc: "上传解密后数据", path: '/decrypt/upload' },
+    { desc: "查询解密状态", path: '/decrypt/status' }
 ]
 
 </script>

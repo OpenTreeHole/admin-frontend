@@ -33,7 +33,6 @@ const message = ref('')
 const receiver = ref('')
 
 async function send() {
-    console.log(123)
     const { type, data } = await callApi(sendMessageSchema, {
         description: message.value,
         recipients: receiver.value.split(',').map(Number).filter(Boolean)
