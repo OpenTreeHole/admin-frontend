@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import { getPGPMessageSchema } from '~/api/shamir/decrypt';
+import { getDecryptHistorySchema } from '~/api/shamir/decrypt';
 import { callApi } from '~/util/callApi';
 
 const layoutStore = useLayoutStore();
@@ -34,7 +34,7 @@ const identity_name = ref('')
 const history = ref([])
 
 async function query() {
-  const { type, data } = await callApi(getPGPMessageSchema, {
+  const { type, data } = await callApi(getDecryptHistorySchema, {
     identity_name: identity_name.value
   })
   if (type !== 'success') {

@@ -6,7 +6,7 @@ const defaultErrorResponseSchema = {
     }
 }
 
-export const getPGPMessageRequestSchema = {
+export const getDecryptHistoryRequestSchema = {
     type: "object",
     required: ["identity_name"],
     properties: {
@@ -14,7 +14,7 @@ export const getPGPMessageRequestSchema = {
     }
 }
 
-export const getPGPMessageSuccessfulResponseSchema = {
+export const getDecryptHistorySuccessfulResponseSchema = {
     type: "array",
     items: {
         type: "object",
@@ -26,7 +26,7 @@ export const getPGPMessageSuccessfulResponseSchema = {
     }
 }
 
-// export const getPGPMessageErrorResponseSchema = {
+// export const getDecryptHistoryErrorResponseSchema = {
 //     type: "object",
 //     required: ["code", "message"],
 //     properties: {
@@ -35,21 +35,21 @@ export const getPGPMessageSuccessfulResponseSchema = {
 //     }
 // }
 
-export const getPGPMessageSchema = {
-    name: 'get-pgp-message',
+export const getDecryptHistorySchema = {
+    name: 'get-decrypt-history',
     base: 'AUTH',
     path: '/shamir',
     method: 'GET',
     token: true,
-    requestSchema: getPGPMessageRequestSchema,
+    requestSchema: getDecryptHistoryRequestSchema,
     responseSchema: {
         success: {
             status: [200],
-            schema: getPGPMessageSuccessfulResponseSchema
+            schema: getDecryptHistorySuccessfulResponseSchema
         },
         fail: {
             status: [400, 403],
-            // schema: getPGPMessageErrorResponseSchema
+            // schema: getDecryptHistoryErrorResponseSchema
             schema: defaultErrorResponseSchema
         }
     }
@@ -163,6 +163,43 @@ export const getDecryptedEmailSchema = {
         success: {
             status: [200],
             schema: getDecryptedEmailSuccessfulResponseSchema
+        },
+        fail: {
+            status: [400, 403],
+            schema: defaultErrorResponseSchema
+        }
+    }
+}
+
+
+export const getPGPMessageRequestSchema = {
+    type: 'object',
+    required: ['identity_name'],
+    properties: {
+        identity_name: { type: 'string' }
+    }
+}
+
+export const getPGPMessageSuccessfulResponseSchema = {
+    type: 'object',
+    required: ['pgp_message'],
+    properties: {
+        "pgp_message": { type: "string" },
+        "user_id": { type: "number" }
+    }
+}
+
+export const getPGPMessageSchema = {
+    name: 'get-pgp-message',
+    base: 'AUTH',
+    path: '/shamir/:user_id:',
+    method: 'GET',
+    token: true,
+    requestSchema: getPGPMessageRequestSchema,
+    responseSchema: {
+        success: {
+            status: [200],
+            schema: getPGPMessageSuccessfulResponseSchema
         },
         fail: {
             status: [400, 403],
