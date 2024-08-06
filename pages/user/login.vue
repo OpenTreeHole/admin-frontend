@@ -1,15 +1,15 @@
 <template>
-    <el-form :model="login_form">
-        <el-form-item label="Email">
-            <el-input v-model="login_form.email" />
-        </el-form-item>
-        <el-form-item label="Password">
-            <el-input v-model="login_form.password" type="password"/>
-        </el-form-item>
-        <el-form-item>
-            <el-button type="primary" @click="submit">Login</el-button>
-        </el-form-item>
-    </el-form>
+  <el-form :model="login_form">
+    <el-form-item label="Email">
+      <el-input v-model="login_form.email" />
+    </el-form-item>
+    <el-form-item label="Password">
+      <el-input v-model="login_form.password" type="password"/>
+    </el-form-item>
+    <el-form-item>
+      <el-button type="primary" @click="submit">Login</el-button>
+    </el-form-item>
+  </el-form>
 
 </template>
 
@@ -25,50 +25,50 @@ const userStore = useUserStore();
 
 layoutStore.title = "Login"
 layoutStore.path = [
-    { name: "Home", path: "/" },
-    { name: "User", path: '/user' },
-    { name: "Login" }
+  { name: "Home", path: "/" },
+  { name: "User", path: '/user' },
+  { name: "Login" }
 ]
 
 let login_form = reactive({
-    email: "",
-    password: ""
+  email: "",
+  password: ""
 })
 
 const submit = async () => {
 
-    const { type, data } = await callApi(loginSchema, {
-        email: login_form.email,
-        password: login_form.password
-    })
+  const { type, data } = await callApi(loginSchema, {
+    email: login_form.email,
+    password: login_form.password
+  })
 
-    if (type == 'success') {
-        userStore.login(data.access, data.refresh)
-        const username = login_form.email.slice(0, login_form.email.search('@'))
-        userStore.setUsername(username)
-        ElNotification({
-            title: 'Successfully logined',
-            message: data.message,
-            position: 'bottom-right',
-            type: 'success'
-        })
-        router.push('/')
-    } else if (type == 'fail') {
-        ElNotification({
-            title: 'Failed to logined',
-            message: data.message,
-            position: 'bottom-right',
-            type: 'error'
-        })
-    } else {
-        ElNotification({
-            title: 'Unknown error',
-            message: '网络错误',
-            position: 'bottom-right',
-            type: 'error'
-        })
-    }
-    
+  if (type == 'success') {
+    userStore.login(data.access, data.refresh)
+    const username = login_form.email.slice(0, login_form.email.search('@'))
+    userStore.setUsername(username)
+    ElNotification({
+      title: 'Successfully logined',
+      message: data.message,
+      position: 'bottom-right',
+      type: 'success'
+    })
+    router.push('/')
+  } else if (type == 'fail') {
+    ElNotification({
+      title: 'Failed to logined',
+      message: data.message,
+      position: 'bottom-right',
+      type: 'error'
+    })
+  } else {
+    ElNotification({
+      title: 'Unknown error',
+      message: '网络错误',
+      position: 'bottom-right',
+      type: 'error'
+    })
+  }
+  
 }
 
 
