@@ -29,15 +29,6 @@
 import { getDecryptStatusSchema, getDecryptedEmailSchema } from '~/api/shamir/decrypt';
 import { callApi } from '~/util/callApi';
 
-const layoutStore = useLayoutStore();
-
-layoutStore.title = "查询解密状态"
-layoutStore.path = [
-  { name: "Home", path: "/" },
-  { name: "Decrypt" },
-  { name: "Status" }
-]
-
 const user_id = ref('')
 
 const visibility = ref(false)

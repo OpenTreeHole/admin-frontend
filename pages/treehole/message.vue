@@ -19,14 +19,6 @@
 <script setup lang="ts">
 import { callApi } from '@/util/callApi'
 import { sendMessageSchema } from '~/api/treehole/message'
-const layoutStore = useLayoutStore();
-
-layoutStore.title = "发送站内信"
-layoutStore.path = [
-    { name: "Home", path: "/" },
-    { name: "Treehole" },
-    { name: "Message" }
-]
 
 const message = ref('')
 

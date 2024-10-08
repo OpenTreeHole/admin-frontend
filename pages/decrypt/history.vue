@@ -20,15 +20,6 @@
 import { getDecryptHistorySchema } from '~/api/shamir/decrypt';
 import { callApi } from '~/util/callApi';
 
-const layoutStore = useLayoutStore();
-
-layoutStore.title = "我的解密历史"
-layoutStore.path = [
-  { name: "Home", path: "/" },
-  { name: "Decrypt" },
-  { name: "History" }
-]
-
 const identity_name = ref('')
 
 const history = ref([])

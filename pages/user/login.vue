@@ -14,21 +14,12 @@
 </template>
 
 <script setup>
-import { useLayoutStore } from '@/store/layout'
 import { useUserStore } from '@/store/user'
 import { callApi } from '@/util/callApi'
 import { loginSchema } from '@/api/user/login'
 
-const layoutStore = useLayoutStore()
 const router = useRouter()
 const userStore = useUserStore();
-
-layoutStore.title = "Login"
-layoutStore.path = [
-  { name: "Home", path: "/" },
-  { name: "User", path: '/user' },
-  { name: "Login" }
-]
 
 let login_form = reactive({
   email: "",

@@ -67,19 +67,8 @@
 </template>
 
 <script setup async>
-
-import { useLayoutStore } from '@/store/layout'
 import { callApi } from '@/util/callApi'
 import { tagListSchema, tagDeleteSchema, tagCreateSchema } from '~/api/treehole/tag'
-
-const layoutStore = useLayoutStore()
-
-layoutStore.title = "Tag Management"
-layoutStore.path = [
-    { name: "Home", path: "/" },
-    { name: "Treehole" },
-    { name: "Tag" }
-]
 
 // the following code is mess
 // but it works

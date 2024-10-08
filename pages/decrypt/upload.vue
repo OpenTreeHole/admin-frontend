@@ -78,15 +78,6 @@ import { decryptSchema, getPGPMessageSchema } from '~/api/shamir/decrypt';
 import { callApi } from '~/util/callApi';
 import * as openpgp from 'openpgp';
 
-const layoutStore = useLayoutStore();
-
-layoutStore.title = "解密用户数据"
-layoutStore.path = [
-  { name: "Home", path: "/" },
-  { name: "Decrypt" },
-  { name: "Upload" }
-]
-
 const activeTab = ref('manual')
 
 const cipher = ref('')

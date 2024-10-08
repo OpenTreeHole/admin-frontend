@@ -51,7 +51,7 @@
             <template #breadcrumb>
               <el-breadcrumb separator="/">
               
-                <template v-for="item in layout_store.path">
+                <template v-for="item in page_info.path">
                   <el-breadcrumb-item v-if="'path' in item" :to="{ path: item.path }">
                     {{ item.name }}
                   </el-breadcrumb-item>
@@ -66,12 +66,12 @@
           
             <template #content>
               <div class="flex items-center">
-                <span class="text-large font-600 mr-3">{{ layout_store.title }}</span>
+                <span class="text-large font-600 mr-3">{{ page_info.title }}</span>
                 <span
                   class="text-sm mr-2"
                   style="color: var(--el-text-color-regular)"
-                  v-if="'subtitle' in layout_store"
-                >{{ layout_store.subtitle }}</span>
+                  v-if="'subtitle' in page_info"
+                >{{ page_info.subtitle }}</span>
               </div>
             </template>
           
@@ -85,13 +85,18 @@
 </template>
 
 <script setup>
+import { pageInfoMapper } from '~/util/route';
 
-const layout_store = useLayoutStore()
 const user_store = useUserStore()
 const router = useRouter()
 
+const page_info = computed(() => {
+  return pageInfoMapper[router.currentRoute.value.fullPath]
+})
+
 function goBack() {
-  router.push('/')
+  // router.push('/')
+  window.location.href = '/'
 }
 
 function login() {
