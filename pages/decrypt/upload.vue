@@ -14,8 +14,9 @@
       />
       <div style="margin: 20px;" />
       <el-button type="primary" @click="get_cipher">获取密文</el-button>
-      <div style="margin: 10px;" />
-      <el-text class="mx-1" style="margin: 5px;">密文：{{ cipher }}</el-text>
+      <el-button v-if="cipher" type="primary" @click="copy_cipher">复制密文</el-button>
+      <!-- <div style="margin: 10px;" /> -->
+      <!-- <el-text class="mx-1" style="margin: 5px;">密文：{{ cipher }}</el-text> -->
       <div style="margin: 10px;" />
       <el-text class="mx-1" style="margin: 5px;">Share</el-text>
       <el-input
@@ -111,6 +112,15 @@ async function get_cipher() {
       type: 'error'
     })
   }
+}
+
+function copy_cipher() {
+  navigator.clipboard.writeText(cipher.value)
+  ElNotification({
+    title: '复制成功',
+    position: 'bottom-right',
+    type: 'success'
+  })
 }
 
 const handleUpload = (file) => {
