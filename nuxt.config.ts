@@ -1,28 +1,33 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 
-const dotenv = require('dotenv')
-dotenv.config()
-
 export default defineNuxtConfig({
+  extends: ['@nuxt/ui-pro'],
+  devtools: { enabled: true },
+
   modules: [
-    '@element-plus/nuxt',
+    '@nuxt/content',
+    '@nuxt/fonts',
+    '@nuxt/image',
+    '@nuxt/ui',
     '@pinia/nuxt',
     '@pinia-plugin-persistedstate/nuxt'
   ],
-  elementPlus: { /** Options */ },
-  devtools: { enabled: true },
+
   pinia: {
     storesDirs: ['./store/**'],
   },
+
   piniaPersistedstate: {
     storage: 'cookies',
   },
+
   runtimeConfig: {
     public: {
-      authBase: '',
-      treeHoleBase: '',
+      authBase: process.env.NUXT_PUBLIC_AUTH_BASE || 'http://localhost:3000',
+      treeHoleBase: process.env.NUXT_PUBLIC_TREE_HOLE_BASE || 'http://localhost:3001',
     }
   },
+
   nitro: {
     devProxy: {
       "/AUTH": {
@@ -37,7 +42,10 @@ export default defineNuxtConfig({
       }
     }
   },
+
   app: {
     pageTransition: { name: 'page', mode: 'out-in' }
   },
+
+  compatibilityDate: '2025-02-03',
 })
