@@ -1,12 +1,5 @@
 import { z } from "zod";
 
-const runtimeConfig = useRuntimeConfig()
-
-export const URL_MAPPER = {
-  AUTH: runtimeConfig.public.authBase,
-  TREEHOLE: runtimeConfig.public.treeHoleBase
-};
-
 export type APIMock = (
   payload?: any,
   param?: any,
@@ -98,6 +91,13 @@ export async function callApi<
 ): Promise<ResponseUnion<ResponseComposedType>> {
   /* 'param' is the parameters in the URL, like 'id' in /user/:id:/profile */
 
+  // get environment variables
+  const runtimeConfig = useRuntimeConfig()
+
+  const URL_MAPPER = {
+    AUTH: runtimeConfig.public.authBase,
+    TREEHOLE: runtimeConfig.public.treeHoleBase
+  };
   // Check the request
 
   const parsedPayload = schema.requestSchema.safeParse(payload);
@@ -132,8 +132,10 @@ export async function callApi<
     schema.method === "GET" || schema.method === "DELETE" ? `${path}?${urlParams}` : path,
     {
       method: schema.method,
-      headers: {
+      headers: schema.token ? {
         Authorization: `Bearer ${accessToken || runtimeConfig.public.devAccessToken}`,
+        "Content-Type": "application/json",
+      } : {
         "Content-Type": "application/json",
       },
       body:
@@ -144,15 +146,15 @@ export async function callApi<
   );
 
   const data = await fetchResponse.json();
-  if (!fetchResponse.ok) {
-    if (fetchResponse.status === 401) {
-      throw new Error(`[${schema.name}]: Unauthorized. Response-status: ${fetchResponse.status}`);
-    }
-    logger.error(
-      `[${schema.name}]: Request failed. Response-status: ${fetchResponse.status}. Response: ${JSON.stringify(data)}`,
-    );
-    // throw new Error(`[${schema.name}]: Request failed. Response-status: ${fetchReponse.status}`);
-  }
+  // if (!fetchResponse.ok) {
+  //   if (fetchResponse.status === 401) {
+  //     throw new Error(`[${schema.name}]: Unauthorized. Response-status: ${fetchResponse.status}`);
+  //   }
+  //   logger.error(
+  //     `[${schema.name}]: Request failed. Response-status: ${fetchResponse.status}. Response: ${JSON.stringify(data)}`,
+  //   );
+  //   // throw new Error(`[${schema.name}]: Request failed. Response-status: ${fetchReponse.status}`);
+  // }
 
   logger.info(`[${schema.name}]: Response-status: ${fetchResponse.status}.`);
 

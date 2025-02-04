@@ -42,8 +42,7 @@ const loading = ref(false);
 // 使用路由进行跳转
 const router = useRouter();
 
-// const toast = useToast();
-
+const toast = useToast();
 
 async function onSubmit(field: any) {
   loading.value = true;
@@ -51,25 +50,20 @@ async function onSubmit(field: any) {
 
   const { type, data } = await callApi(loginSchema, field)
 
+  console.log(type, data)
+
   if (type === 'success') {
-    errorMessage.value = data.message
     loading.value = false
-    return
+    const userStore = useUserStore()
+    if (userStore.login(data.access, data.refresh)) {
+      router.push('/')
+      toast.add({ title: '登录成功', color: 'green' })
+    } else {
+      errorMessage.value = '后端返回的数据无效'
+    }
+  } else {
+    errorMessage.value = data.message
   }
-
-//   try {
-//     const user = await $client.login.mutate({
-//       email: data.email,
-//       password: data.password,
-//     });
-//     const userStore = useUserStore();
-//     userStore.login(user);
-
-//     router.push("/");
-//   } catch (err: any) {
-//     errorMessage.value = err.message;
-//     toast.add({ title: err.message, color: 'red' });
-//   }
 
   loading.value = false;
 }
