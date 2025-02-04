@@ -7,14 +7,16 @@ defineProps<{
 
 // const route = useRoute()
 const { $ui } = useNuxtApp()
+
+const route = useRoute()
 </script>
 
 <template>
   <UHeader
     :links="links"
     :class="{
-      'border-primary-200/75 dark:border-primary-900/50': $route.path === '/',
-      'border-gray-200 dark:border-gray-800': $route.path !== '/',
+      'border-primary-200/75 dark:border-primary-900/50': route.path === '/',
+      'border-gray-200 dark:border-gray-800': route.path !== '/',
     }"
     :ui="{
       left: 'min-w-0',
