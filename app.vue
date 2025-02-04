@@ -12,13 +12,8 @@ const links = computed<HeaderLink[]>(() => {
   const unlogined_links = [{
     label: '登录',
     icon: 'i-material-symbols-login-rounded',
-    to: '/login',
-    active: route.path.startsWith('/login'),
-  }, {
-    label: '注册',
-    icon: 'i-material-symbols-person-add',
-    to: '/register',
-    active: route.path.startsWith('/register'),
+    to: '/user/login',
+    active: route.path.startsWith('/user/login'),
   }]
 
   if (!user.isLogin()) {
@@ -43,8 +38,8 @@ const links = computed<HeaderLink[]>(() => {
   }, {
     label: '登出',
     icon: 'i-material-symbols-logout-rounded',
-    to: '/logout',
-    active: route.path.startsWith('/logout'),
+    to: '/user/logout',
+    active: route.path.startsWith('/user/logout'),
   }]
 
   return default_links

@@ -25,14 +25,14 @@ const page = ref({
   },
   utils: {
     // headline: 'Utilities',
-    title: 'What can AIPlatform do?',
+    title: 'Quick Access',
     description: '',
     items: [
       {
         title: 'Tag迁移',
         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.',
         link: '/tag/transfer',
-        icon: 'i-material-symbols-format-list-bulleted',
+        icon: 'i-streamline-arrow-transfer-diagonal-3-solid',
       },
       {
         title: '发送站内信',
@@ -44,12 +44,12 @@ const page = ref({
         title: '开盒',
         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.',
         link: '/decipher',
-        icon: 'i-hugeicons-paint-board',
+        icon: 'i-material-symbols-key-vertical-outline',
       },
       {
         title: '我也不知道写什么了先放把椅子在这里',
         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.',
-        link: '/model/list',
+        link: '/chair',
         icon: 'i-material-symbols-chair-alt-outline-rounded',
       },
     ],
