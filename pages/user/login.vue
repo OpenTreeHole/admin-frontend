@@ -1,5 +1,9 @@
 <script setup lang="ts">
-// 定义表单字段
+
+import { useUserStore } from '@/store/user'
+import { callApi } from '~/api/api'
+import { loginSchema } from '@/api/user/login'
+
 const fields = [
   {
     name: "email",
@@ -38,26 +42,34 @@ const loading = ref(false);
 // 使用路由进行跳转
 const router = useRouter();
 
-// 提交处理函数
-const { $client } = useNuxtApp();
+// const toast = useToast();
 
-async function onSubmit(data: any) {
-  // async function onSubmit(_: any) {
+
+async function onSubmit(field: any) {
   loading.value = true;
   errorMessage.value = "";
 
-  try {
-    const user = await $client.login.mutate({
-      email: data.email,
-      password: data.password,
-    });
-    const userStore = useUserStore();
-    userStore.login(user);
+  const { type, data } = await callApi(loginSchema, field)
 
-    router.push("/");
-  } catch (err: any) {
-    errorMessage.value = err.message;
+  if (type === 'success') {
+    errorMessage.value = data.message
+    loading.value = false
+    return
   }
+
+//   try {
+//     const user = await $client.login.mutate({
+//       email: data.email,
+//       password: data.password,
+//     });
+//     const userStore = useUserStore();
+//     userStore.login(user);
+
+//     router.push("/");
+//   } catch (err: any) {
+//     errorMessage.value = err.message;
+//     toast.add({ title: err.message, color: 'red' });
+//   }
 
   loading.value = false;
 }

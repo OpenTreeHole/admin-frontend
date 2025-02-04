@@ -23,8 +23,9 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
-      authBase: process.env.NUXT_PUBLIC_AUTH_BASE || 'http://localhost:3000',
-      treeHoleBase: process.env.NUXT_PUBLIC_TREE_HOLE_BASE || 'http://localhost:3001',
+      authBase: process.env.AUTH_BASE || 'http://localhost:3000',
+      treeHoleBase: process.env.TREE_HOLE_BASE || 'http://localhost:3001',
+      devAccessToken: process.env.DEV_ACCESS_TOKEN || 'dev-access-token',
     }
   },
 

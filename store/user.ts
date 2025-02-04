@@ -1,33 +1,40 @@
 import { defineStore } from "pinia"
+import { ref } from "vue"
 
-export const useUserStore = defineStore('user', {
-    state: () => ({
-        access_token: undefined,
-        refresh_token: undefined,
-        username: ""
-    }),
-    // getters
-    getters: {
-        logined: (state): boolean => {
-            return state.access_token !== undefined
-        },
-    },
-    actions: {
-        login(access, refresh): boolean {
-            if (access == undefined || refresh == undefined) {
-                return false;
-            }
-            this.access_token = access;
-            this.refresh_token = refresh;
-            return true;
-        },
-        logout() {
-            this.access_token = undefined
-            this.refresh_token = undefined
-        },
-        setUsername(username: string) {
-            this.username = username
+export const useUserStore = defineStore('user', () => {
+    const access_token = ref("")
+    const refresh_token = ref("")
+    const email = ref("")
+    const logined = computed(() => access_token.value != "" && refresh_token.value != "")
+
+    function login(access: string, refresh: string) {
+        if (access == "" || refresh == "") {
+            return false;
         }
-    },
-    persist: true
+        access_token.value = access;
+        refresh_token.value = refresh;
+        return true;
+    }
+
+    function logout() {
+        access_token.value = ""
+        refresh_token.value = ""
+    }
+
+    function setEmail(name: string) {
+        email.value = name
+    }
+
+    return {
+        // fields
+        access_token,
+        refresh_token,
+        email,
+        logined,
+
+        // actions
+        login,
+        logout,
+        setEmail,
+    }
 })

@@ -1,31 +1,21 @@
-export const loginRequestSchema = {
-    type: "object",
-    required: ['email', 'password'],
-    properties: {
-        email: { type: "string" },
-        password: { type: "string" }
-    }
-}
+import { z } from "zod";
 
-export const loginSuccessfulResponseSchema = {
-    type: "object",
-    required: ['access', 'refresh', 'message'],
-    properties: {
-        access: { type: "string" },
-        refresh: { type: "string" },
-        message: { type: "string" }
-    }
-}
+const loginRequestSchema = z.object({
+    email: z.string(),
+    password: z.string()
+});
 
-export const loginFailedResponseSchema = {
-    type: "object",
-    required: ['code', 'message'],
-    properties: {
-        code: { type: "number" },
-        message: { type: "string" },
-        detail: { type: "array" }
-    }
-}
+export const loginSuccessfulResponseSchema = z.object({
+    access: z.string(),
+    refresh: z.string(),
+    message: z.string()
+});
+
+export const loginFailedResponseSchema = z.object({
+    code: z.number(),
+    message: z.string(),
+    detail: z.array(z.any()).optional()
+});
 
 export const loginSchema = {
     name: 'login',
@@ -44,4 +34,4 @@ export const loginSchema = {
             schema: loginFailedResponseSchema
         }
     }
-}
+} as const;
