@@ -1,17 +1,11 @@
-export const sendMessageRequestSchema = {
-    type: 'object',
-    required: ["description", "recipients"],
-    properties: {
-        description: { type: 'string' },
-        recipients: { type: 'array', items: { type: 'number' } }
-    }
-}
+import { z } from "zod";
 
-export const sendMessageResponseSchema = {
-    type: 'object',
-    required: [],
-    properties: {}
-}
+const sendMessageRequestSchema = z.object({
+    description: z.string(),
+    recipients: z.array(z.number())
+});
+
+export const sendMessageResponseSchema = z.object({});
 
 export const sendMessageSchema = {
     name: 'sendMessage',
@@ -26,4 +20,4 @@ export const sendMessageSchema = {
             schema: sendMessageResponseSchema
         }
     }
-}
+} as const;

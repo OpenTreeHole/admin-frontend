@@ -1,39 +1,17 @@
-const defaultErrorResponseSchema = {
-    type: "object",
-    required: ["message"],
-    properties: {
-        "message": { type: "string" }
-    }
-}
+import { z } from "zod";
 
-export const getDecryptHistoryRequestSchema = {
-    type: "object",
-    required: ["identity_name"],
-    properties: {
-        "identity_name": { type: "string" } // actually 'recipient uid'
-    }
-}
+const defaultErrorResponseSchema = z.object({
+    message: z.string()
+});
 
-export const getDecryptHistorySuccessfulResponseSchema = {
-    type: "array",
-    items: {
-        type: "object",
-        required: ['user_id', 'pgp_message'],
-        properties: {
-            "pgp_message": { type: "string" },
-            "user_id": { type: "number" }
-        }
-    }
-}
+export const getDecryptHistoryRequestSchema = z.object({
+    identity_name: z.string() // actually 'recipient uid'
+});
 
-// export const getDecryptHistoryErrorResponseSchema = {
-//     type: "object",
-//     required: ["code", "message"],
-//     properties: {
-//         "code": { type: "number" },
-//         "message": { type: "string" }
-//     }
-// }
+export const getDecryptHistorySuccessfulResponseSchema = z.array(z.object({
+    pgp_message: z.string(),
+    user_id: z.number()
+}));
 
 export const getDecryptHistorySchema = {
     name: 'get-decrypt-history',
@@ -49,39 +27,23 @@ export const getDecryptHistorySchema = {
         },
         fail: {
             status: [400, 403],
-            // schema: getDecryptHistoryErrorResponseSchema
             schema: defaultErrorResponseSchema
         }
     }
-}
+} as const;
 
+export const decryptRequestSchema = z.object({
+    identity_name: z.string(),
+    share: z.string(),
+    user_id: z.number()
+});
 
-export const decryptRequestSchema = {
-    type: "object",
-    required: ['identity_name', 'share', 'user_id'],
-    properties: {
-        "identity_name": { type: "string" },
-        "share": { type: "string" },
-        "user_id": { type: "number" }
-    }
-}
-
-export const decryptSuccessfulResponseSchema = {
-    type: "object",
-    required: ['message'],
-    properties: {
-        "data": {
-            type: "object",
-            properties: {
-                "identity_names": {
-                    type: "array",
-                    items: { type: "string" }
-                }
-            }
-        },
-        "message": { "type": "string" }
-    }
-}
+export const decryptSuccessfulResponseSchema = z.object({
+    data: z.object({
+        identity_names: z.array(z.string())
+    }).optional(),
+    message: z.string()
+});
 
 export const decryptSchema = {
     name: 'decrypt',
@@ -100,22 +62,14 @@ export const decryptSchema = {
             schema: defaultErrorResponseSchema
         }
     }
-}
+} as const;
 
-export const getDecryptStatusRequestSchema = {
-    type: 'object',
-    required: [],
-    properties: {}
-}
+export const getDecryptStatusRequestSchema = z.object({});
 
-export const getDecryptStatusSuccessfulResponseSchema = {
-    type: 'object',
-    required: ['shamir_upload_ready', 'uploaded_shares_identity_names'],
-    properties: {
-        "shamir_upload_ready": { type: "boolean" },
-        "uploaded_shares_identity_names": { type: "array", items: { type: "string" } }
-    }
-}
+export const getDecryptStatusSuccessfulResponseSchema = z.object({
+    shamir_upload_ready: z.boolean(),
+    uploaded_shares_identity_names: z.array(z.string())
+});
 
 export const getDecryptStatusSchema = {
     name: 'get-decrypt-status',
@@ -134,23 +88,15 @@ export const getDecryptStatusSchema = {
             schema: defaultErrorResponseSchema
         }
     }
-}
+} as const;
 
-export const getDecryptedEmailRequestSchema = {
-    type: 'object',
-    required: [],
-    properties: {}
-}
+export const getDecryptedEmailRequestSchema = z.object({});
 
-export const getDecryptedEmailSuccessfulResponseSchema = {
-    type: 'object',
-    required: ['identity_names', 'user_email', 'user_id'],
-    properties: {
-        "identity_names": { type: "array", items: { type: "string" } },
-        "user_email": { type: "string" },
-        "user_id": { type: "number" }
-    }
-}
+export const getDecryptedEmailSuccessfulResponseSchema = z.object({
+    identity_names: z.array(z.string()),
+    user_email: z.string(),
+    user_id: z.number()
+});
 
 export const getDecryptedEmailSchema = {
     name: 'get-decrypt-email',
@@ -169,25 +115,16 @@ export const getDecryptedEmailSchema = {
             schema: defaultErrorResponseSchema
         }
     }
-}
+} as const;
 
+export const getPGPMessageRequestSchema = z.object({
+    identity_name: z.string()
+});
 
-export const getPGPMessageRequestSchema = {
-    type: 'object',
-    required: ['identity_name'],
-    properties: {
-        identity_name: { type: 'string' }
-    }
-}
-
-export const getPGPMessageSuccessfulResponseSchema = {
-    type: 'object',
-    required: ['pgp_message'],
-    properties: {
-        "pgp_message": { type: "string" },
-        "user_id": { type: "number" }
-    }
-}
+export const getPGPMessageSuccessfulResponseSchema = z.object({
+    pgp_message: z.string(),
+    user_id: z.number()
+});
 
 export const getPGPMessageSchema = {
     name: 'get-pgp-message',
@@ -206,4 +143,4 @@ export const getPGPMessageSchema = {
             schema: defaultErrorResponseSchema
         }
     }
-}
+} as const;

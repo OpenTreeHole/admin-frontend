@@ -1,27 +1,18 @@
-const TagInfoSchema = {
-    "id": { type: "number" },
-    "name": { type: "string" },
-    "temperature": { type: "number" },
-    "is_zzmg": { type: "boolean" },
-    "is_sensitive": { type: "boolean" },
-    "is_actual_sensitive": { type: "boolean" },
-    "tag_id": { type: "number" }
-}
+import { z } from "zod";
 
-export const tagListRequestSchema = {
-    type: "object",
-    required: [],
-    properties: {}
-}
+const TagInfoSchema = z.object({
+    id: z.number(),
+    name: z.string(),
+    temperature: z.number(),
+    is_zzmg: z.boolean(),
+    is_sensitive: z.boolean(),
+    is_actual_sensitive: z.boolean(),
+    tag_id: z.number()
+});
 
-export const tagListSuccessfulResponseSchema = {
-    type: "array",
-    items: {
-        type: "object",
-        required: ['id', 'name', 'temperature'],
-        properties: TagInfoSchema
-    }
-}
+export const tagListRequestSchema = z.object({});
+
+export const tagListSuccessfulResponseSchema = z.array(TagInfoSchema);
 
 export const tagListSchema = {
     name: 'tag-list',
@@ -36,21 +27,13 @@ export const tagListSchema = {
             schema: tagListSuccessfulResponseSchema
         }
     }
-}
+} as const;
 
-export const tagCreateRequestSchema = {
-    type: "object",
-    required: ['name'],
-    properties: {
-        "name": { type: "string" }
-    }
-}
+export const tagCreateRequestSchema = z.object({
+    name: z.string()
+});
 
-export const tagCreateSuccessfulResponseSchema = {
-    type: "object",
-    required: ['id', 'name'],
-    properties: TagInfoSchema
-}
+export const tagCreateSuccessfulResponseSchema = TagInfoSchema;
 
 export const tagCreateSchema = {
     name: 'tag-create',
@@ -65,21 +48,13 @@ export const tagCreateSchema = {
             schema: tagCreateSuccessfulResponseSchema
         }
     }
-}
+} as const;
 
-export const tagDeleteRequestSchema = {
-    type: "object",
-    required: ['to'],
-    properties: {
-        "to": { type: "string" }
-    }
-}
+export const tagDeleteRequestSchema = z.object({
+    to: z.string()
+});
 
-export const tagDeleteResponseSchema = {
-    type: "object",
-    required: ['id', 'name'],
-    properties: TagInfoSchema
-}
+export const tagDeleteResponseSchema = TagInfoSchema;
 
 export const tagDeleteSchema = {
     name: 'tag-delete',
@@ -94,4 +69,4 @@ export const tagDeleteSchema = {
             schema: tagDeleteResponseSchema
         }
     }
-}
+} as const;
