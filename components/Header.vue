@@ -36,7 +36,7 @@ const route = useRoute()
       <UColorModeButton />
 
       <UButton
-        to="https://github.com/Zecyel/ai"
+        to="https://github.com/OpenTreeHole/admin-frontend"
         target="_blank"
         icon="i-simple-icons-github"
         aria-label="GitHub"
