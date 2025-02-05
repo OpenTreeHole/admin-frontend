@@ -60,7 +60,13 @@ function responseSchemaMatch<
   );
 
   if (!responseSchema) {
-    throw new Error(`[${schema.name}]: Response status ${status} not matched.`);
+    if (response.status === 401) {
+      const toast = useToast()
+      toast.add({ title: "401 Unauthorized", color: "red" });
+      throw new Error(`[${schema.name}]: Unauthorized.`);
+    } else {
+      throw new Error(`[${schema.name}]: Response status ${status} not matched.`);
+    }
   }
 
   const zodSchema: z.ZodType<any> = responseSchema[1].schema;
@@ -124,9 +130,11 @@ export async function callApi<
   const urlParams = new URLSearchParams(convertedPayload as Record<string, string>);
 
   // Manual token handling
-  const accessToken = cookie?.split("access=")[1]?.split(";")[0];
+  const userStore = useUserStore();
+  const accessToken = userStore.access_token;
 
   logger.info(`[${schema.name}]: Sending request to ${path}`);
+  logger.info(`[${schema.name}]: Request-payload: ${JSON.stringify(convertedPayload)}`);
 
   const fetchResponse = await fetch(
     schema.method === "GET" || schema.method === "DELETE" ? `${path}?${urlParams}` : path,
