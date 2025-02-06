@@ -1,8 +1,7 @@
 <script setup lang="ts">
-
-import { useUserStore } from '@/store/user'
-import { callApi } from '~/api/api'
-import { loginSchema } from '@/api/user/login'
+import { useUserStore } from "@/store/user";
+import { callApi } from "~/api/api";
+import { loginSchema } from "@/api/user/login";
 
 const fields = [
   {
@@ -48,21 +47,21 @@ async function onSubmit(field: any) {
   loading.value = true;
   errorMessage.value = "";
 
-  const { type, data } = await callApi(loginSchema, field)
+  const { type, data } = await callApi(loginSchema, field);
 
-  console.log(type, data)
+  console.log(type, data);
 
-  if (type === 'success') {
-    loading.value = false
-    const userStore = useUserStore()
+  if (type === "success") {
+    loading.value = false;
+    const userStore = useUserStore();
     if (userStore.login(data.access, data.refresh)) {
-      router.push('/')
-      toast.add({ title: '登录成功', color: 'green' })
+      router.push("/");
+      toast.add({ title: "登录成功", color: "green" });
     } else {
-      errorMessage.value = '后端返回的数据无效'
+      errorMessage.value = "后端返回的数据无效";
     }
   } else {
-    errorMessage.value = data.message
+    errorMessage.value = data.message;
   }
 
   loading.value = false;
@@ -70,40 +69,36 @@ async function onSubmit(field: any) {
 </script>
 
 <template>
-  <div class="flex items-center justify-center min-h-screen">
-    <UCard
-      class="max-w-sm w-full mx-auto p-6 rounded-lg shadow-md"
+  <UCard class="max-w-sm w-full mx-auto p-6 rounded-lg shadow-md">
+    <UAuthForm
+      :fields="fields"
+      :validate="validate"
+      title="欢迎回来！"
+      align="top"
+      icon="i-heroicons-lock-closed"
+      :ui="{ base: 'text-center', footer: 'text-center' }"
+      :loading="loading"
+      :submit-button="{
+        label: '登录',
+        icon: 'i-material-symbols-login-rounded',
+      }"
+      @submit="onSubmit"
     >
-      <UAuthForm
-        :fields="fields"
-        :validate="validate"
-        title="欢迎回来！"
-        align="top"
-        icon="i-heroicons-lock-closed"
-        :ui="{ base: 'text-center', footer: 'text-center' }"
-        :loading="loading"
-        :submit-button="{
-          label: '登录',
-          icon: 'i-material-symbols-login-rounded',
-        }"
-        @submit="onSubmit"
-      >
-        <template #validation>
-          <UAlert
-            v-if="errorMessage"
-            color="red"
-            icon="i-heroicons-information-circle-20-solid"
-            :title="errorMessage"
-          />
-        </template>
+      <template #validation>
+        <UAlert
+          v-if="errorMessage"
+          color="red"
+          icon="i-heroicons-information-circle-20-solid"
+          :title="errorMessage"
+        />
+      </template>
 
-        <template #footer>
-          登录即表示您同意我们的
-          <NuxtLink to="/user/terms" class="text-primary font-medium">
-            服务条款 </NuxtLink
-          >。
-        </template>
-      </UAuthForm>
-    </UCard>
-  </div>
+      <template #footer>
+        登录即表示您同意我们的
+        <NuxtLink to="/user/terms" class="text-primary font-medium">
+          服务条款 </NuxtLink
+        >。
+      </template>
+    </UAuthForm>
+  </UCard>
 </template>
