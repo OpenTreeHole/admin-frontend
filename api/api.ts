@@ -64,6 +64,10 @@ function responseSchemaMatch<
       const toast = useToast()
       toast.add({ title: "401 Unauthorized", color: "red" });
       throw new Error(`[${schema.name}]: Unauthorized.`);
+    } else if (response.status.toString().startsWith("5")) {
+      const toast = useToast()
+      toast.add({ title: "500 Server Error", color: "red" });
+      throw new Error(`[${schema.name}]: Server Error.`);
     } else {
       throw new Error(`[${schema.name}]: Response status ${status} not matched.`);
     }
@@ -93,7 +97,7 @@ export async function callApi<
   schema: APISchema<RequestType, ResponseComposedType>,
   payload: RequestType,
   param: Record<string, string> = {},
-  cookie?: string | null,
+  // cookie?: string | null,
 ): Promise<ResponseUnion<ResponseComposedType>> {
   /* 'param' is the parameters in the URL, like 'id' in /user/:id:/profile */
 
